@@ -18,7 +18,7 @@ class Buttons{
 
         this.Song1.mousePressed(()=>{
             SongSelection = SongSelection1;
-            gameState = 2;
+            gameState = PLAY;
             SongDuration = 1504;
             SongSelection.play();
         })

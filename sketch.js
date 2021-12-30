@@ -1,5 +1,5 @@
 var MENU = 0, SELECT = 1, PLAY = 2, END = 3;
-var gameState = 1;
+var gameState = SELECT;
 
 var SongButtons, SongSelection;
 var SongSelection1, SongSelection2, SongSelection3;
@@ -8,6 +8,8 @@ var SongDuration = 0, Intro = 125;
 var bg, player, limit1, limit2;
 var goodNoteImg, badNoteImg, GnotesGroup, BnotesGroup;
 var GoodNotes = 0, BadNotes = 0;
+
+var Video;
 
 function preload(){
   bgmenu = loadImage("Images/menupage.jpg");
@@ -21,6 +23,10 @@ function preload(){
 
   goodNoteImg = loadImage("Images/goodnote.png");
   badNoteImg = loadImage("Images/brokennote.png");
+  
+  vid = createVideo(["Video/Tequila.mp4"], vidLoad);
+  vid.size(100,100)
+  vid.x = windowWidth/2;
 }
 
 function setup() {
@@ -37,15 +43,18 @@ function setup() {
   player.visible = false;
 
   limit1 = createSprite(windowWidth/6, player.y - 50, 200, 150);
-  limit1.visible = false;
-  player.collide(limit1);
+  //limit1.visible = false;
+  player.bounceOff(limit1);
 
   limit2 = createSprite(windowWidth + 55, player.y - 50, 200, 150);
-  limit2.visible = false;
+  //limit2.visible = false;
   limit2.collide(player);
 
   GnotesGroup = new Group();
   BnotesGroup = new Group();
+
+  /*Video1 = createSprite(100,200,100,100);
+  Video1.addVideo(Video);*/
 }
 
 function draw() {
@@ -53,32 +62,34 @@ function draw() {
   /*Intro += -1
 
   if(Intro < 0){
-    gameState = 1;
+    gameState = SELECT;
   }*/
 
-  if(gameState === 1){
+  if(gameState === SELECT){
     background(bgselect);
     SongButtons.display()
   }else{
     SongButtons.hide();
   }
 
-  if(gameState === 2){
+  if(gameState === PLAY){
     background(bgplay);
     bg.visible = true;
     player.visible = true;
     playerMove();
     spawner();
 
+    SongButtons.hide();
+
     SongDuration = SongDuration + 1;
     console.log(SongDuration);
 
-    if(GnotesGroup.isTouching(player)){
+    if(player.isTouching(GnotesGroup)){
       GoodNotes += 1
       GnotesGroup.destroyEach();
     }
 
-    if(BnotesGroup.isTouching(player)){
+    if(player.isTouching(GnotesGroup)){
       BadNotes += 1
       BnotesGroup.destroyEach();
     }
@@ -92,11 +103,12 @@ function draw() {
   }
 
   drawSprites();
+  console.log(gameState);
 }
 
 function playerMove(){
   if(keyDown("A") || keyDown("LEFT_ARROW")){
-    player.x += -10;
+    player.velocityX = -10;
   }
 
   if(keyDown("RIGHT_ARROW") || keyDown("D")){
@@ -124,4 +136,9 @@ function spawner(){
 
     BnotesGroup.add(badNote);
   }
+}
+
+function vidLoad() {
+  vid.loop();
+  vid.volume(0);
 }
