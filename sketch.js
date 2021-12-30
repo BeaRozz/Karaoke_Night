@@ -9,8 +9,6 @@ var bg, player, limit1, limit2;
 var goodNoteImg, badNoteImg, GnotesGroup, BnotesGroup;
 var GoodNotes = 0, BadNotes = 0;
 
-var Video;
-
 function preload(){
   bgmenu = loadImage("Images/menupage.jpg");
   bgplay = loadImage("Images/bgplay.jpg");
@@ -24,9 +22,6 @@ function preload(){
   goodNoteImg = loadImage("Images/goodnote.png");
   badNoteImg = loadImage("Images/brokennote.png");
   
-  vid = createVideo(["Video/Tequila.mp4"], vidLoad);
-  vid.size(100,100)
-  vid.x = windowWidth/2;
 }
 
 function setup() {
@@ -136,9 +131,4 @@ function spawner(){
 
     BnotesGroup.add(badNote);
   }
-}
-
-function vidLoad() {
-  vid.loop();
-  vid.volume(0);
 }
